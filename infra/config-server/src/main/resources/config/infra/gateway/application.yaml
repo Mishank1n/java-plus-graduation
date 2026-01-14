@@ -1,3 +1,15 @@
+server:
+  port: 8080
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: gateway,health,info
+
 spring:
   cloud:
     gateway:
@@ -10,10 +22,6 @@ spring:
           predicates:
             - Path=/**
 
-
-server:
-  port: 8080
-
 eureka:
   client:
     service-url:
@@ -21,18 +29,6 @@ eureka:
     register-with-eureka: false
     fetch-registry: true
 
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,gateway,routes,beans,env
-      base-path: /actuator
-  endpoint:
-    gateway:
-      enabled: true
-    health:
-      show-details: always
 
 logging:
   level:
