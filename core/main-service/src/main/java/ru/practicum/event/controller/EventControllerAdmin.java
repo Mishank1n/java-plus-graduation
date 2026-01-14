@@ -41,7 +41,7 @@ public class EventControllerAdmin {
                                            @RequestParam(name = "rangeEnd", required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
                                            @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
                                            @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-        EventParam p = EventParam.builder()
+        EventParam eventParam = EventParam.builder()
                 .categories(categories)
                 .rangeStart(rangeStart)
                 .rangeEnd(rangeEnd)
@@ -49,7 +49,7 @@ public class EventControllerAdmin {
                 .size(size)
                 .build();
 
-        List<EventFullDto> events = eventService.getEventsAdmin(p);
+        List<EventFullDto> events = eventService.getEventsAdmin(eventParam);
         log.info("Выполнен поиск событий администратором");
         return events;
     }

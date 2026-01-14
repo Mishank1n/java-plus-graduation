@@ -55,17 +55,17 @@ public class StatsClient {
         parameters.put("start", startString);
         parameters.put("end", endString);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("/stats?start={start}&end={end}");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("/stats?start={start}&end={end}");
         if (uris != null) {
             parameters.put("uris", uris);
-            sb.append("&uris={uris}");
+            stringBuilder.append("&uris={uris}");
         }
         if (unique != null) {
             parameters.put("unique", unique);
-            sb.append("&unique={unique}");
+            stringBuilder.append("&unique={unique}");
         }
-        String fullPath = getStatsServiceUrl() + sb.toString();
+        String fullPath = getStatsServiceUrl() + stringBuilder.toString();
         return makeAndSendGetStatsRequest(HttpMethod.GET, fullPath, parameters, null);
     }
 

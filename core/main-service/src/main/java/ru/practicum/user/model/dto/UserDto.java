@@ -16,6 +16,6 @@ public class UserDto {
     @NotBlank
     String name;
     @Email
-    @NotNull
+    @NotBlank
     String email;
 }

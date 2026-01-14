@@ -23,12 +23,12 @@ public class RequestMapper {
     }
 
     public static Request toRequest(RequestDto dto, Event event, User user) {
-        Request pr = new Request();
-        pr.setId(dto.getId());
-        pr.setCreated(LocalDateTime.parse(dto.getCreated(), TIME_FORMAT));
-        pr.setEvent(event);
-        pr.setRequester(user);
-        pr.setStatus(dto.getStatus());
-        return pr;
+        Request request = new Request();
+        request.setId(dto.getId());
+        request.setCreated(LocalDateTime.parse(dto.getCreated(), TIME_FORMAT));
+        request.setEvent(event);
+        request.setRequester(user);
+        request.setStatus(dto.getStatus());
+        return request;
     }
 }

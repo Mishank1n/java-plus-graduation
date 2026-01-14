@@ -37,7 +37,7 @@ public class EventControllerPublic {
                                          @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
                                          @RequestParam(name = "size", defaultValue = "10") @Positive int size,
                                          HttpServletRequest request)  {
-        EventParam p = EventParam.builder()
+        EventParam eventParam = EventParam.builder()
                 .text(text)
                 .categories(categories)
                 .paid(paid)
@@ -51,7 +51,7 @@ public class EventControllerPublic {
                 .build();
 
         log.info("Выполнен запрос получения всех событий");
-        return eventService.getEvents(p);
+        return eventService.getEvents(eventParam);
     }
 
     @GetMapping(EVENT_ID_PATH)

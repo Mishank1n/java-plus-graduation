@@ -64,7 +64,7 @@ public class RequestServiceImp implements RequestService {
             throw new CreateConditionException(String.format("Событие с id = %d не опубликовано", eventId));
         }
         /*нельзя участвовать при превышении лимита заявок*/
-        if (event.getParticipantLimit() != 0) { //если ==0, то кол-во участников неограничено
+        if (event.getParticipantLimit() != 0) { //если ==0, то кол-во участников неограниченно
             if (event.getConfirmedRequests() >= event.getParticipantLimit()) {
                 throw new CreateConditionException(String.format("У события с id = %d достигнут лимит участников %d", eventId, event.getParticipantLimit()));
             }

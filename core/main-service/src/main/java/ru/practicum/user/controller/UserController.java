@@ -19,8 +19,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto addUser(@Valid @RequestBody UserRequest userRequest) {
-        UserDto userDto = userService.addUser(userRequest);
-        return userDto;
+        return userService.addUser(userRequest);
     }
 
     @GetMapping

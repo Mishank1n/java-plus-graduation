@@ -21,8 +21,7 @@ public class CompilationControllerAdmin {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CompilationDto postCompilation(@Valid @RequestBody NewCompilationDto newCompilationDto) {
-        CompilationDto compilationDto = compilationService.create(newCompilationDto);
-        return compilationDto;
+        return compilationService.create(newCompilationDto);
     }
 
     @DeleteMapping(COMP_ID_PATH)
@@ -35,7 +34,6 @@ public class CompilationControllerAdmin {
     @ResponseStatus(HttpStatus.OK)
     public CompilationDto patchCompilation(@PathVariable(name = "compId") int compId,
                                            @Valid @RequestBody UpdateCompilationRequest updateRequest) {
-        CompilationDto compilationDto = compilationService.update(compId, updateRequest);
-        return compilationDto;
+        return compilationService.update(compId, updateRequest);
     }
 }

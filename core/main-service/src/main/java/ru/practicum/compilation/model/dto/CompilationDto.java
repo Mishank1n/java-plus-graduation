@@ -1,6 +1,7 @@
 package ru.practicum.compilation.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,6 +21,6 @@ public class CompilationDto {
     @NotBlank
     String title;
     boolean pinned;
-    @NotNull
+    @NotEmpty
     Set<EventShortDto> events = new HashSet<>();
 }

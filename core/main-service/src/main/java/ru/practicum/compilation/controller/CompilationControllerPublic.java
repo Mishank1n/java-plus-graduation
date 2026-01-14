@@ -25,13 +25,11 @@ public class CompilationControllerPublic {
     public List<CompilationDto> getCompilations(@RequestParam(name = "pinned", defaultValue = "false") boolean pinned,
                                                 @RequestParam(name = "from", defaultValue = "0") @PositiveOrZero int from,
                                                 @RequestParam(name = "size", defaultValue = "10") @Positive int size) {
-        List<CompilationDto> compnDtoList = compilationService.getAllComps(pinned, from, size);
-        return compnDtoList;
+        return compilationService.getAllComps(pinned, from, size);
     }
 
     @GetMapping(COMP_ID_PATH)
     public CompilationDto getCompilations(@PathVariable int compId) {
-        CompilationDto compilationDto = compilationService.getCompById(compId);
-        return compilationDto;
+        return compilationService.getCompById(compId);
     }
 }
