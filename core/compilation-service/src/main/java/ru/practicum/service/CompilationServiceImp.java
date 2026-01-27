@@ -1,6 +1,8 @@
 package ru.practicum.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +29,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompilationServiceImp implements CompilationService {
-    private final EventClient eventClient;
-    private final CompilationRepository compilationRepository;
+    EventClient eventClient;
+    CompilationRepository compilationRepository;
+    String errorMessageNotFound = "Compilation with id=%d not found";
 
     @Override
     public CompilationDto create(NewCompilationDto newCompilationDto) {
@@ -50,7 +54,7 @@ public class CompilationServiceImp implements CompilationService {
     @Override
     public void deleteById(long compId) {
         compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%d not found", compId)));
+                .orElseThrow(() -> new NotFoundException(String.format(errorMessageNotFound, compId)));
         compilationRepository.deleteById(compId);
     }
 
@@ -58,7 +62,7 @@ public class CompilationServiceImp implements CompilationService {
     @Transactional
     public CompilationDto update(long compId, UpdateCompilationRequest updateRequest) {
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%d not found", compId)));
+                .orElseThrow(() -> new NotFoundException(String.format(errorMessageNotFound, compId)));
         Set<Long> eventIds = updateRequest.getEvents();
         Set<EventShortDto> eventsSet;
         if (eventIds == null || eventIds.isEmpty()) {
@@ -102,7 +106,7 @@ public class CompilationServiceImp implements CompilationService {
         }
 
         Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException(String.format("Compilation with id=%d not found", compId)));
+                .orElseThrow(() -> new NotFoundException(String.format(errorMessageNotFound, compId)));
         return CompilationMapper.toDto(compilation, eventClient.getEventsByIds(compilation.getEvents()));
     }
 

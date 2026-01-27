@@ -1,7 +1,9 @@
 package ru.practicum.controller;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.category.dto.CategoryDto;
@@ -14,13 +16,14 @@ import java.util.Map;
 @RestController
 @RequestMapping
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryController {
 
-    private final CategoryService service;
-    private static final String ADMIN_PATH = "/admin/categories";
-    private static final String PUBLIC_PROTECTED_PATH = "/categories";
-    private static final String ID_PATH = "/{catId}";
-    private static final String FEIGN_CLIENT_PATH = "/feign/categories";
+    final CategoryService service;
+    static final String ADMIN_PATH = "/admin/categories";
+    static final String PUBLIC_PROTECTED_PATH = "/categories";
+    static final String ID_PATH = "/{catId}";
+    static final String FEIGN_CLIENT_PATH = "/feign/categories";
 
     @GetMapping(PUBLIC_PROTECTED_PATH)
     public List<CategoryDto> getAll(@RequestParam(defaultValue = "0") Integer from, @RequestParam(defaultValue = "10") Integer size) {

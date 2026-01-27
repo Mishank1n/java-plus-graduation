@@ -3,7 +3,9 @@ package ru.practicum.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +21,11 @@ import java.util.List;
 @RequestMapping("/admin/events")
 @Slf4j
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventControllerAdmin {
-    private final EventService eventService;
-    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String EVENT_ID_PATH = "/{eventId}";
+    final EventService eventService;
+    static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    static final String EVENT_ID_PATH = "/{eventId}";
 
 
     @PatchMapping(EVENT_ID_PATH)

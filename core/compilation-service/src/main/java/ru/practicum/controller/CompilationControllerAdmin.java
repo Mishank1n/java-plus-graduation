@@ -1,6 +1,8 @@
 package ru.practicum.controller;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.compilation.dto.CompilationDto;
@@ -10,9 +12,10 @@ import ru.practicum.service.CompilationService;
 
 @RestController
 @RequestMapping("/admin/compilations")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationControllerAdmin {
-    private final CompilationService compilationService;
-    private static final String COMP_ID_PATH = "/{compId}";
+    final CompilationService compilationService;
+    static final String COMP_ID_PATH = "/{compId}";
 
     public CompilationControllerAdmin(CompilationService compilationService) {
         this.compilationService = compilationService;

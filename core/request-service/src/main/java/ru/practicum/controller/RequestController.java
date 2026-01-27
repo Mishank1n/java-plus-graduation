@@ -1,6 +1,8 @@
 package ru.practicum.controller;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.request.dto.RequestDto;
@@ -11,12 +13,13 @@ import java.util.List;
 @RestController
 @RequestMapping
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RequestController {
 
-    private static final String PUBLIC_API_PATH = "/users/{userId}/requests";
-    private static final String FEIGN_CLIENT_PATH = "/feign/requests";
+    static final String PUBLIC_API_PATH = "/users/{userId}/requests";
+    static final String FEIGN_CLIENT_PATH = "/feign/requests";
 
-    private final RequestService service;
+    final RequestService service;
 
     @GetMapping(PUBLIC_API_PATH)
     public List<RequestDto> getAll(@PathVariable("userId") Long userId) {

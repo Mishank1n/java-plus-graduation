@@ -3,7 +3,9 @@ package ru.practicum.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -21,10 +23,11 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventControllerPublic {
-    private final EventService eventService;
-    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    private static final String EVENT_ID_PATH = "/{eventId}";
+    final EventService eventService;
+    static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    static final String EVENT_ID_PATH = "/{eventId}";
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(name = "text", required = false) String text,

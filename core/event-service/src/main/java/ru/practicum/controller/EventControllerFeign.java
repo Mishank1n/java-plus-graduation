@@ -1,7 +1,9 @@
 package ru.practicum.controller;
 
 import jakarta.validation.constraints.Positive;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.EventFullDto;
@@ -13,11 +15,12 @@ import java.util.Set;
 @RestController
 @RequestMapping(EventControllerFeign.FEIGN_PATH)
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventControllerFeign {
 
-    private final EventService eventService;
+    final EventService eventService;
     public static final String FEIGN_PATH = "/feign/events";
-    private static final String ID_PATH = "/{eventId}";
+    static final String ID_PATH = "/{eventId}";
 
     @GetMapping(ID_PATH)
     @ResponseStatus(HttpStatus.OK)

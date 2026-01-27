@@ -1,7 +1,9 @@
 package ru.practicum.controller;
 
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.comment.dto.CommentRequest;
@@ -13,15 +15,16 @@ import java.util.List;
 @RestController
 @RequestMapping
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentController {
 
-    private final CommentService commentService;
+    final CommentService commentService;
     public static final String PUBLIC_API_PATH = "/event/{eventId}/comment";
-    private static final String EVENT_ID = "eventId";
-    private static final String COMMENT_ID = "commentId";
-    private static final String X_USER_ID = "X-User-Id";
-    private static final String COMMENT_ID_PATH = "/{commentId}";
-    private static final String FEIGN_CLIENT_PATH = "/feign/comments";
+    static final String EVENT_ID = "eventId";
+    static final String COMMENT_ID = "commentId";
+    static final String X_USER_ID = "X-User-Id";
+    static final String COMMENT_ID_PATH = "/{commentId}";
+    static final String FEIGN_CLIENT_PATH = "/feign/comments";
 
 
     @PostMapping(PUBLIC_API_PATH)

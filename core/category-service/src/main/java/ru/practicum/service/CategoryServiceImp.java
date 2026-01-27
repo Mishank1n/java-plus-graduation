@@ -1,6 +1,8 @@
 package ru.practicum.service;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,13 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CategoryServiceImp implements CategoryService {
 
-    private final CategoryRepository repository;
-    private final EventClient eventClient;
-    private final String errorMessageNotFound = "Category with id = %d was not found";
-    private final String errorMessageAlreadyExist = "Category with name = %s is already exists";
+    CategoryRepository repository;
+    EventClient eventClient;
+    String errorMessageNotFound = "Category with id = %d was not found";
+    String errorMessageAlreadyExist = "Category with name = %s is already exists";
 
     @Override
     public List<CategoryDto> getAll(Integer from, Integer size) {

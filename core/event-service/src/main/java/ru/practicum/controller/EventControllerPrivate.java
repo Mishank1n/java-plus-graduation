@@ -4,7 +4,9 @@ package ru.practicum.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +20,11 @@ import java.util.List;
 @RequestMapping(path = "/users/{userId}/events")
 @Slf4j
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventControllerPrivate {
-    private final EventService eventService;
-    private static final String EVENT_ID_PATH = "/{eventId}";
-    private static final String EVENT_ID_REQUEST_PATH = "/{eventId}/requests";
+    final EventService eventService;
+    static final String EVENT_ID_PATH = "/{eventId}";
+    static final String EVENT_ID_REQUEST_PATH = "/{eventId}/requests";
 
 
     @PostMapping

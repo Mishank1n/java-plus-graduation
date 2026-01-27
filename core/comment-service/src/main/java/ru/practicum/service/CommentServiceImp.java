@@ -1,6 +1,8 @@
 package ru.practicum.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.comment.dto.CommentRequest;
@@ -22,10 +24,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommentServiceImp implements CommentService {
-    private final UserClient userClient;
-    private final EventClient eventClient;
-    private final CommentRepository commentRepository;
+    UserClient userClient;
+    EventClient eventClient;
+    CommentRepository commentRepository;
+    String errorMessageNotFound = "Комментарий с id = %d не найден";
+    String errorMessageNotAuthor = "Только автор c id = %d может редактировать комментарий";
 
 
     @Override
@@ -47,10 +52,10 @@ public class CommentServiceImp implements CommentService {
     @Override
     @Transactional
     public CommentResponse updateComment(Long userId, Long commentId, CommentRequest commentRequest) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException(String.format("Комментарий с id = %d не найден", commentId)));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException(String.format(errorMessageNotFound, commentId)));
         UserDto user = userClient.getUser(userId);
         if (!comment.getAuthor().equals(userId)) {
-            throw new ConflictException("Только автор может редактировать комментарий");
+            throw new ConflictException(String.format(errorMessageNotAuthor, comment.getAuthor()));
         }
         comment.setText(commentRequest.getText());
         Comment updatedComment = commentRepository.save(comment);
@@ -72,7 +77,7 @@ public class CommentServiceImp implements CommentService {
         EventFullDto eventFullDto = eventClient.getEvent(eventId);
 
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException(String.format("Комментарий с id = %d не найден", commentId)));
+                .orElseThrow(() -> new NotFoundException(String.format(errorMessageNotFound, commentId)));
 
         if (!(comment.getEvent().equals(eventId))) {
             throw new NotFoundException(String.format("Комментарий с id = %d не принадлежит указанному событию  с id = %d", commentId, eventId));
@@ -85,11 +90,11 @@ public class CommentServiceImp implements CommentService {
     @Transactional
     public void deleteComment(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException(String.format("Комментарий с id = %d не найден", commentId)));
+                .orElseThrow(() -> new NotFoundException(String.format(errorMessageNotFound, commentId)));
 
         // Проверка автора
         if (!(comment.getAuthor().equals(userId))) {
-            throw new ConflictException("Только автор может удалять комментарий");
+            throw new ConflictException(String.format(errorMessageNotAuthor, comment.getAuthor()));
         }
         commentRepository.deleteById(commentId);
     }

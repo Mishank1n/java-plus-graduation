@@ -2,6 +2,8 @@ package ru.practicum.controller;
 
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.compilation.dto.CompilationDto;
@@ -11,10 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/compilations")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationControllerPublic {
 
-    private final CompilationService compilationService;
-    private static final String COMP_ID_PATH = "/{compId}";
+    final CompilationService compilationService;
+    static final String COMP_ID_PATH = "/{compId}";
 
     @Autowired
     public CompilationControllerPublic(CompilationService compilationService) {

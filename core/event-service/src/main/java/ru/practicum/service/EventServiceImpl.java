@@ -5,7 +5,9 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -44,15 +46,16 @@ import static java.time.temporal.ChronoUnit.HOURS;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EventServiceImpl implements EventService {
-    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private final EventRepository eventJpaRepository;
-    private final CategoryClient categoryClient;
-    private final UserClient userClient;
-    private final RequestClient requestClient;
-    private final CommentClient commentClient;
-    private final CompilationClient compilationClient;
-    private final EntityManager entityManager;
+    static DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    EventRepository eventJpaRepository;
+    CategoryClient categoryClient;
+    UserClient userClient;
+    RequestClient requestClient;
+    CommentClient commentClient;
+    CompilationClient compilationClient;
+    EntityManager entityManager;
 
 
     @Transactional
