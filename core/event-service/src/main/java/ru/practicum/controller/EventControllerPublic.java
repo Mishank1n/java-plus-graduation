@@ -30,6 +30,7 @@ public class EventControllerPublic {
     final EventService eventService;
     static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     static final String EVENT_ID_PATH = "/{eventId}";
+    static final String USER_ID_HEADER = "X-EWM-USER-ID";
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(name = "text", required = false) String text,
@@ -60,7 +61,7 @@ public class EventControllerPublic {
     }
 
     @GetMapping(EVENT_ID_PATH)
-    public EventFullDto getEvent(@PathVariable(name = "eventId") Long eventId, @RequestHeader("X-EWM-USER-ID") Long userId) {
+    public EventFullDto getEvent(@PathVariable(name = "eventId") Long eventId, @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Выполнен запрос получения события с id={}", eventId);
         EventFullDto eventFullDto = eventService.getEvent(eventId, userId);
         saveHit(userId, eventId);
@@ -69,7 +70,7 @@ public class EventControllerPublic {
 
     @GetMapping("/recommendations")
     @ResponseStatus(HttpStatus.OK)
-    public List<EventShortDto> getEventsRecommendations(@RequestHeader("X-EWM-USER-ID") Long userId) {
+    public List<EventShortDto> getEventsRecommendations(@RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос на получение списка рекомендаций пользователя {}", userId);
         return eventService.getEventsRecommendations(userId);
     }
