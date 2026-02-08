@@ -78,7 +78,7 @@ public class EventControllerPublic {
     @PutMapping("/{eventId}/like")
     @ResponseStatus(HttpStatus.CREATED)
     public void likeEvent(@PathVariable("eventId") Long eventId,
-                          @RequestHeader("X-EWM-USER-ID") Long userId) {
+                          @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Запрос на лайк ивента {} от пользователя {}", eventId, userId);
         eventService.likeEvent(eventId, userId);
     }
