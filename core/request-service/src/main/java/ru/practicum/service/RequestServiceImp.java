@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.CollectorClient;
 import ru.practicum.event.client.EventClient;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventState;
@@ -20,6 +21,7 @@ import ru.practicum.request.dto.RequestDto;
 import ru.practicum.request.dto.RequestStatus;
 import ru.practicum.user.client.UserClient;
 import ru.practicum.user.dto.UserDto;
+import ru.yandex.practicum.grpc.user.action.ActionTypeProto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class RequestServiceImp implements RequestService {
     RequestRepository repository;
     EventClient eventClient;
     UserClient userClient;
+    CollectorClient collectorClient;
 
 
     @Override
@@ -82,6 +85,7 @@ public class RequestServiceImp implements RequestService {
         } else {
             request.setStatus(RequestStatus.PENDING);
         }
+        sendUserAction(userId, eventId, ActionTypeProto.ACTION_REGISTER);
         return RequestMapper.toRequestDto(repository.save(request));
     }
 
@@ -148,5 +152,13 @@ public class RequestServiceImp implements RequestService {
     public void deleteAllWithEvent(Long eventId) {
         List<Request> requestsForDelete = repository.findAllByEventId(eventId);
         requestsForDelete.forEach(request -> repository.deleteById(request.getId()));
+    }
+
+    private void sendUserAction(Long userId, Long eventId, ActionTypeProto actionType) {
+        try {
+            collectorClient.sendUserAction(userId, eventId, actionType);
+        } catch (Exception e) {
+            log.warn("Failed to save statistics for userId={}, eventId={}", userId, eventId, e);
+        }
     }
 }

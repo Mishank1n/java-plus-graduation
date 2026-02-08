@@ -26,6 +26,14 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 
+grpc:
+  client:
+    collector:
+      address: 'discovery:///collector'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+
 eureka:
   client:
     service-url:

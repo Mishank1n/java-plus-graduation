@@ -37,5 +37,5 @@ public class EventFullDto {
     EventState state = EventState.PENDING;
     @NotBlank
     String title;
-    long views;
+    double rating;
 }

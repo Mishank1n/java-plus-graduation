@@ -8,12 +8,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.model.EventParam;
 import ru.practicum.service.EventService;
+import ru.yandex.practicum.grpc.user.action.ActionTypeProto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +30,7 @@ public class EventControllerPublic {
     final EventService eventService;
     static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     static final String EVENT_ID_PATH = "/{eventId}";
+    static final String USER_ID_HEADER = "X-EWM-USER-ID";
 
     @GetMapping
     public List<EventShortDto> getEvents(@RequestParam(name = "text", required = false) String text,
@@ -58,8 +61,29 @@ public class EventControllerPublic {
     }
 
     @GetMapping(EVENT_ID_PATH)
-    public EventFullDto getEvent(@PathVariable(name = "eventId") Long eventId, HttpServletRequest request) {
+    public EventFullDto getEvent(@PathVariable(name = "eventId") Long eventId, @RequestHeader(USER_ID_HEADER) Long userId) {
         log.info("Выполнен запрос получения события с id={}", eventId);
-        return eventService.getEvent(eventId, request);
+        EventFullDto eventFullDto = eventService.getEvent(eventId, userId);
+        saveHit(userId, eventId);
+        return eventFullDto;
+    }
+
+    @GetMapping("/recommendations")
+    @ResponseStatus(HttpStatus.OK)
+    public List<EventShortDto> getEventsRecommendations(@RequestHeader(USER_ID_HEADER) Long userId) {
+        log.info("Запрос на получение списка рекомендаций пользователя {}", userId);
+        return eventService.getEventsRecommendations(userId);
+    }
+
+    @PutMapping("/{eventId}/like")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void likeEvent(@PathVariable("eventId") Long eventId,
+                          @RequestHeader(USER_ID_HEADER) Long userId) {
+        log.info("Запрос на лайк ивента {} от пользователя {}", eventId, userId);
+        eventService.likeEvent(eventId, userId);
+    }
+
+    private void saveHit(Long userId, Long eventId) {
+        eventService.sendUserAction(userId, eventId, ActionTypeProto.ACTION_VIEW);
     }
 }

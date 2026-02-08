@@ -1,9 +1,9 @@
 package ru.practicum.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import ru.practicum.event.dto.*;
 import ru.practicum.model.EventParam;
 import ru.practicum.request.dto.RequestDto;
+import ru.yandex.practicum.grpc.user.action.ActionTypeProto;
 
 import java.util.List;
 import java.util.Set;
@@ -13,7 +13,7 @@ public interface EventService {
 
     List<EventFullDto> getEventsAdmin(EventParam p);
 
-    EventFullDto getEvent(Long eventId, HttpServletRequest request);
+    EventFullDto getEvent(Long eventId, Long userId);
 
     EventFullDto create(NewEventDto newEventDto, Long userId);
 
@@ -38,4 +38,10 @@ public interface EventService {
     void updateConfirmedRequests(Long eventId, Integer newAmount);
 
     void deleteEventsByAuthor(Long authorId);
+
+    List<EventShortDto> getEventsRecommendations(Long userId);
+
+    void likeEvent(Long eventId, Long userId);
+
+    void sendUserAction(Long userId, Long eventId, ActionTypeProto actionTypeProto);
 }

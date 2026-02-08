@@ -28,4 +28,5 @@ public interface RequestClient {
 
     @PostMapping("/event/delete")
     void deleteAllWithEvent(@RequestParam(name = "eventId") Long eventId);
+
 }
