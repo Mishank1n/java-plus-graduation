@@ -1,0 +1,29 @@
+server:
+  port: 0
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer-group-id: aggregator-group
+
+
+logging:
+  level:
+    ru:
+      yandex:
+        practicum:
+          aggregator:
+            DEBUG
+    org:
+      springframework:
+        kafka:
+          INFO
+      apache:
+        kafka:
+          INFO
+      zalando: TRACE
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
